@@ -20,7 +20,7 @@ Use PHP 8.1 or newer compatible with the installed dependencies and MySQL/MariaD
 
 Preserve this directory structure. Set the website document root to the `public/` folder, not the package root. Keep `config`, `database`, `modules`, `includes`, `vendor` and `scripts` outside the public document root. For shared hosting, ask the provider how to point the domain at `public/`; do not move only the PHP entry files without updating their relative dependencies.
 
-For local inspection only, the login URL is `http://localhost/widms/public/login.php`. This copy uses the same database defaults as the original until you configure a different database. Do not submit changes from the copy if you do not want them applied to that shared database.
+For local access, open `http://localhost/widms/`; the root start page redirects to `public/` and then the login page. The direct login URL is `http://localhost/widms/public/login.php`. This copy uses the same database defaults as the original until you configure a different database. Do not submit changes from the copy if you do not want them applied to that shared database.
 
 Apache `.htaccess` files deny browser access to private directories as an extra safeguard. They require Apache to allow those directives and do not protect Nginx installations. Always configure the correct public document root. Test that private files cannot be downloaded before going live.
 
@@ -110,3 +110,5 @@ Check login for each role, uploaded-document access, PDF/CSV exports and the con
 - Real email/SMS delivery and every business workflow have NOT been tested on a hosting server. A successful local audit is not a guarantee of server configuration or gateway availability.
 
 Run `php scripts/check-runtime.php` on the destination for repeatable diagnostics. It checks configuration presence without printing credentials, sends no messages, and does not modify operational records.
+#   w i d m s _  
+ 
