@@ -1,0 +1,2 @@
+-- Retired: no individual aid item is seeded by migrations.
+-- Create Spectacles or any other item through Eligibility Rule Configuration.

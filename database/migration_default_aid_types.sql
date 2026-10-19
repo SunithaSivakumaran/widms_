@@ -1,0 +1,2 @@
+-- Retired: default item categories and aid items must not be seeded.
+-- Subject Officers configure the live disability types, items, and rules.
