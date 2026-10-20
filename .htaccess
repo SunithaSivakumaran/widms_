@@ -1,4 +1,5 @@
 Options -Indexes
+DirectoryIndex index.php
 <FilesMatch "^(README\.md|DEPLOYMENT_COMMANDS\.md|composer\.(json|lock))$">
     Require all denied
 </FilesMatch>
