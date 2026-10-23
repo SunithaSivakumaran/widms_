@@ -528,11 +528,21 @@ function widmsGoodsRequestTranslations(): array
 }
 
 /* English source text is the fallback, which prevents blank UI when a new key is added. */
+function widmsInterfaceTranslations(): array
+{
+    static $labels = null;
+    return $labels ??= require __DIR__ . '/interface-i18n.php';
+}
+
 function t(string $english): string
 {
     $language = widmsLanguage();
     if ($language === 'en') {
         return $english;
+    }
+    $interfaceLabels = widmsInterfaceTranslations();
+    if (isset($interfaceLabels[$language][$english])) {
+        return $interfaceLabels[$language][$english];
     }
     $correctionHistoryLabels = [
         'si' => [
@@ -1838,6 +1848,8 @@ function widmsUiTranslationPayload(): array
         }
     }
 
+    $payload = array_replace($payload, widmsInterfaceTranslations()[$language] ?? []);
+
     // Longest phrases are replaced first so a short label cannot split a full sentence.
     uksort($payload, static fn(string $a, string $b): int => strlen($b) <=> strlen($a));
     return $payload;
@@ -1851,5 +1863,6 @@ function widmsUiTranslationAssetsHtml(): string
     }
 
     $payload = json_encode(widmsUiTranslationPayload(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
-    return '<script>window.WIDMS_TRANSLATIONS=' . ($payload ?: '{}') . ';</script><script src="assets/js/i18n-ui.js"></script>';
+    $version = (string) filemtime(__DIR__ . '/../public/assets/js/i18n-ui.js');
+    return '<script>window.WIDMS_TRANSLATIONS=' . ($payload ?: '{}') . ';</script><script src="assets/js/i18n-ui.js?v=' . $version . '"></script>';
 }

@@ -1431,7 +1431,7 @@ if ($currentRole === 'admin') {
 
         <div class="reports-intro">
             <div><span class="reports-eyebrow">LIVE REPORTING</span><h2>Operational reports</h2><p>Select a report to inspect its current records, or download it as a PDF or CSV.</p></div>
-            <span class="reports-total"><?= count($reports) ?> report types</span>
+            <span class="reports-total"><?= htmlspecialchars(sprintf(t('%s report types'), (string) count($reports)), ENT_QUOTES, 'UTF-8') ?></span>
         </div>
         <section class="reports-grid">
 
@@ -1442,7 +1442,7 @@ if ($currentRole === 'admin') {
                 <article class="report-card report-tone-<?= htmlspecialchars($reportMeta[$key]['tone'], ENT_QUOTES, 'UTF-8') ?>">
 
 
-                    <div class="report-card-top"><span class="report-icon" aria-hidden="true"><?= htmlspecialchars($reportMeta[$key]['icon'], ENT_QUOTES, 'UTF-8') ?></span><span class="report-record-count"><?= $reportCounts[$key] === null ? 'Unavailable' : number_format($reportCounts[$key]) . ' ' . htmlspecialchars($reportMeta[$key]['unit'], ENT_QUOTES, 'UTF-8') ?></span></div>
+                    <div class="report-card-top"><span class="report-icon" aria-hidden="true"><?= htmlspecialchars($reportMeta[$key]['icon'], ENT_QUOTES, 'UTF-8') ?></span><span class="report-record-count"><?= htmlspecialchars($reportCounts[$key] === null ? t('Unavailable') : number_format($reportCounts[$key]) . ' ' . t($reportMeta[$key]['unit']), ENT_QUOTES, 'UTF-8') ?></span></div>
 
 
                     <h2>
@@ -1561,7 +1561,7 @@ if ($currentRole === 'admin') {
                             ) ?>
 
                         </small>
-                        <p class="report-preview-summary"><?= number_format(count($rows)) ?> matching records · <?= count($reports[$type][2]) ?> columns · <?= htmlspecialchars($currentRole === 'admin' ? 'Administrator' : 'Subject Officer', ENT_QUOTES, 'UTF-8') ?> view</p>
+                        <p class="report-preview-summary"><?= htmlspecialchars(sprintf(t('%s matching records · %s columns · %s view'), number_format(count($rows)), (string) count($reports[$type][2]), t($currentRole === 'admin' ? 'Administrator' : 'Subject Officer')), ENT_QUOTES, 'UTF-8') ?></p>
 
 
                     </div>
@@ -1622,9 +1622,9 @@ if ($currentRole === 'admin') {
                         <input type="search" name="q" value="<?= htmlspecialchars($reportSearch, ENT_QUOTES, 'UTF-8') ?>" placeholder="Name, item, reference or keyword">
                     </label>
                     <?php foreach ($reportFilterFields[$type] as $field): ?>
-                        <label><?= htmlspecialchars($field, ENT_QUOTES, 'UTF-8') ?>
+                        <label><?= htmlspecialchars(t($field), ENT_QUOTES, 'UTF-8') ?>
                             <select name="filters[<?= htmlspecialchars($field, ENT_QUOTES, 'UTF-8') ?>]">
-                                <option value="">All <?= htmlspecialchars($field, ENT_QUOTES, 'UTF-8') ?></option>
+                                <option value=""><?= htmlspecialchars(t('All') . ' ' . t($field), ENT_QUOTES, 'UTF-8') ?></option>
                                 <?php foreach ($filterOptions[$field] as $option): ?>
                                     <option value="<?= htmlspecialchars($option, ENT_QUOTES, 'UTF-8') ?>" <?= $selectedFilters[$field] === $option ? 'selected' : '' ?>><?= htmlspecialchars($option, ENT_QUOTES, 'UTF-8') ?></option>
                                 <?php endforeach; ?>
