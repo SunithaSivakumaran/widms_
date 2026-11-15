@@ -10,13 +10,19 @@ CREATE TABLE IF NOT EXISTS spectacle_categories (
     UNIQUE KEY uq_spectacle_category_name (name)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT IGNORE INTO spectacle_categories (name, display_order) VALUES
-('Reading Only', 1),
-('Distance Only', 2),
-('Bifocal', 3),
-('Cylinder Bifocal', 4),
-('Cylinder Distance', 5),
-('Child', 6);
+INSERT INTO spectacle_categories (name, display_order)
+SELECT seed.name, seed.display_order
+FROM (
+    SELECT 'Reading Only' AS name, 1 AS display_order
+    UNION ALL SELECT 'Distance Only', 2
+    UNION ALL SELECT 'Bifocal', 3
+    UNION ALL SELECT 'Cylinder Bifocal', 4
+    UNION ALL SELECT 'Cylinder Distance', 5
+    UNION ALL SELECT 'Child', 6
+) AS seed
+WHERE NOT EXISTS (
+    SELECT 1 FROM spectacle_categories existing WHERE existing.name=seed.name
+);
 
 ALTER TABLE aid_requests ADD COLUMN IF NOT EXISTS spectacle_category_id INT UNSIGNED NULL AFTER prescribed_power;
 ALTER TABLE spectacle_camp_participants ADD COLUMN IF NOT EXISTS spectacle_category_id INT UNSIGNED NULL AFTER power;

@@ -74,4 +74,5 @@ SELECT c.user_id,c.notification_key,'','skipped','before-activation'
 FROM notification_sms_candidates c
 WHERE NOT EXISTS (SELECT 1 FROM notification_sms_state WHERE id=1)
 ON DUPLICATE KEY UPDATE id=id;
-INSERT IGNORE INTO notification_sms_state (id) VALUES (1);
+INSERT INTO notification_sms_state (id) VALUES (1)
+ON DUPLICATE KEY UPDATE id = id;

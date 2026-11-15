@@ -2,7 +2,7 @@ USE widms;
 
 -- Preserve existing pending/approved requests when an older installation did
 -- not create the corresponding disability-to-aid rule at request time.
-INSERT IGNORE INTO disability_aid_items
+INSERT INTO disability_aid_items
     (disability_type_id, item_id, restriction_months, is_system, status, created_by)
 SELECT DISTINCT
     dt.id,

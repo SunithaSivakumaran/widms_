@@ -1,6 +1,6 @@
 -- Install defaults only when missing; never overwrite an administrator's
 -- settings on an existing installation.
-INSERT IGNORE INTO system_settings
+INSERT INTO system_settings
     (setting_key, setting_value, setting_type, setting_group, description)
 VALUES
     ('low_stock_threshold', '10', 'integer', 'general', 'Minimum stock quantity before a low-stock alert is triggered'),
@@ -10,4 +10,5 @@ VALUES
     ('notify_low_stock', 'true', 'boolean', 'notification', 'Send alert when item stock drops below threshold'),
     ('notify_pending_approval', 'true', 'boolean', 'notification', 'Notify Admin of pending registration or request'),
     ('notify_payment_due', 'true', 'boolean', 'notification', 'Alert Store Keeper of outstanding supplier payments'),
-    ('email_notifications', 'true', 'boolean', 'notification', 'Send email notifications in addition to in-system alerts');
+    ('email_notifications', 'true', 'boolean', 'notification', 'Send email notifications in addition to in-system alerts')
+ON DUPLICATE KEY UPDATE setting_key = setting_key;

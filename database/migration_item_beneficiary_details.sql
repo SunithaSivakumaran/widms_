@@ -58,10 +58,15 @@ ALTER TABLE disability_aid_item_fields
     MODIFY COLUMN field_type ENUM('text','number','date','image','pdf') NOT NULL DEFAULT 'text';
 
 -- Preserve every existing one-field configuration as the first editable field.
-INSERT IGNORE INTO disability_aid_item_fields(disability_aid_item_id, field_label, field_type, display_order)
-SELECT id, beneficiary_field_label, beneficiary_field_type, 1
-FROM disability_aid_items
-WHERE beneficiary_field_label IS NOT NULL AND beneficiary_field_label <> '';
+INSERT INTO disability_aid_item_fields(disability_aid_item_id, field_label, field_type, display_order)
+SELECT dai.id, dai.beneficiary_field_label, dai.beneficiary_field_type, 1
+FROM disability_aid_items dai
+WHERE dai.beneficiary_field_label IS NOT NULL AND dai.beneficiary_field_label <> ''
+  AND NOT EXISTS (
+      SELECT 1 FROM disability_aid_item_fields field
+      WHERE field.disability_aid_item_id=dai.id
+        AND field.field_label=dai.beneficiary_field_label
+  );
 
 SET @has_column := (SELECT COUNT(*) FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'aid_requests' AND COLUMN_NAME = 'beneficiary_details_json');
 SET @statement := IF(@has_column = 0, 'ALTER TABLE aid_requests ADD COLUMN beneficiary_details_json TEXT NULL AFTER beneficiary_detail_value', 'SELECT 1');

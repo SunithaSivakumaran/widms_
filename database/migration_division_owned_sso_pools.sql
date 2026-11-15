@@ -22,9 +22,9 @@ JOIN users u ON u.id = p.officer_id
 WHERE COALESCE(p.ds_division_id, u.ds_division_id) IS NOT NULL
 GROUP BY COALESCE(p.ds_division_id, u.ds_division_id), p.item_id
 ON DUPLICATE KEY UPDATE
-    allocated = VALUES(allocated),
-    distributed = VALUES(distributed),
-    reused = VALUES(reused);
+    allocated = allocated,
+    distributed = distributed,
+    reused = reused;
 
 ALTER TABLE pool_allocations ADD COLUMN IF NOT EXISTS ds_division_id INT UNSIGNED NULL AFTER officer_id;
 UPDATE pool_allocations pa
